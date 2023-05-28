@@ -13,3 +13,4 @@ bash splash.sh restore
 bash grubtheme.sh
 ```
 
+https://cdn.discordapp.com/attachments/1109505279386714185/1112248869884014644/IMG_3977.jpg
