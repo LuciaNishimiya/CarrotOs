@@ -1,0 +1,10 @@
+[Unit]
+Description=Actualizar Discord automáticamente al iniciar sesión
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/discordup
+
+[Install]
+WantedBy=default.target
+

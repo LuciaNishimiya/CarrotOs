@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Colores para visualización
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+RESET=$(tput sgr0)
+
+# Configuración
+URL="https://discord.com/api/download?platform=linux&format=deb"
+TMP_FILE=$(mktemp --suffix=.deb)
+
+echo "⏳ Obteniendo información de la última versión..."
+
+# Obtener URL final (redirigida) que contiene la versión real
+LOCATION=$(curl -sI "$URL" | grep -i '^location:' | tr -d '\r' | awk '{print $2}')
+VERSION_REMOTE=$(echo "$LOCATION" | grep -oP '\d+\.\d+\.\d+' | head -n1 | tr -d '[:space:]')
+
+
+if [ -z "$VERSION_REMOTE" ]; then
+    echo "${RED}❌ No se pudo determinar la versión remota.${RESET}"
+    exit 1
+fi
+
+echo "🔎 Última versión disponible: $VERSION_REMOTE"
+
+# Ruta real del archivo de versión instalado
+BUILD_INFO="/usr/share/discord/resources/build_info.json"
+
+# Verificar si está instalado
+if [ -f "$BUILD_INFO" ]; then
+    VERSION_LOCAL=$(grep version "$BUILD_INFO" | grep -oP '\d+\.\d+\.\d+' | tr -d '[:space:]')
+    echo "📦 Versión instalada: $VERSION_LOCAL"
+else
+    echo "${RED}⚠️ Discord no está instalado o no se encontró build_info.json${RESET}"
+    VERSION_LOCAL="0.0.0"
+fi
+
+# Comparar versiones
+if [ "$VERSION_REMOTE" = "$VERSION_LOCAL" ]; then
+    echo "${GREEN}✅ Ya tienes la última versión instalada.${RESET}"
+    exit 0
+fi
+
+# Descargar nuevo .deb
+echo "⬇️ Descargando Discord $VERSION_REMOTE..."
+wget -qO "$TMP_FILE" "$LOCATION"
+
+if [ $? -ne 0 ]; then
+    echo "${RED}❌ Error al descargar el archivo.${RESET}"
+    exit 1
+fi
+
+# Instalar
+echo "🛠️ Instalando Discord..."
+sudo dpkg -i "$TMP_FILE"
+if [ $? -ne 0 ]; then
+    echo "${RED}⚠️ Fallo en la instalación. Reparando dependencias...${RESET}"
+    sudo apt -f install -y
+    if [ $? -ne 0 ]; then
+        echo "${RED}❌ Error al reparar dependencias.${RESET}"
+        rm -f "$TMP_FILE"
+        exit 1
+    fi
+fi
+
+# Limpiar archivo temporal
+echo "🧹 Limpiando archivo temporal..."
+rm -f "$TMP_FILE"
+
+echo "${GREEN}✅ Discord $VERSION_REMOTE instalado correctamente.${RESET}"
+
