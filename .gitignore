@@ -1,14 +1,39 @@
+
 *
 !.gitignore
 
 
+!.config/
 !.config/hypr/
-!.config/kitty/
-!.config/waybar/
+!.config/hypr/**
 
-!.zshrc
+!.config/waybar/
+!.config/waybar/**
+
+!.config/rofi/
+!.config/rofi/**
+
+!.config/kitty/
+!.config/kitty/**
+
+!.config/gtk-3.0/
+!.config/gtk-3.0/**
+
+!.config/zsh/
+!.config/zsh/**
+
 !.local/
 !.local/bin/
+!.local/bin/**
+
+!.zshrc
+
 
 !.themes/
-!.icons/
+!.themes/**
+
+
+!.oh-my-zsh/
+!.oh-my-zsh/themes/
+.oh-my-zsh/themes/*
+!.oh-my-zsh/themes/candypink.zsh-theme
