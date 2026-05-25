@@ -1,0 +1,32 @@
+#!/bin/bash
+
+    UUID="759e4781-1af9-4003-b255-e52d86ad08e7"
+    MAPPER="nvme"
+    MOUNTPOINT="/mnt/nvme"
+
+    # Abrir el volumen LUKS si no está abierto
+    if [ ! -e "/dev/mapper/$MAPPER" ]; then
+        echo "Abriendo LUKS..."
+        sudo cryptsetup open "/dev/disk/by-uuid/$UUID" "$MAPPER" || {
+            echo "Error al abrir LUKS"
+        }
+    else
+        echo "El volumen ya está abierto"
+    fi
+
+    # Crear punto de montaje si no existe
+    if [ ! -d "$MOUNTPOINT" ]; then
+        sudo mkdir -p "$MOUNTPOINT" || {
+            echo "Error al crear el directorio de montaje"
+        }
+    fi
+
+    # Montar si no está montado
+    if ! mountpoint -q "$MOUNTPOINT"; then
+        sudo mount "/dev/mapper/$MAPPER" "$MOUNTPOINT" || {
+            echo "Error al montar el volumen"
+        }
+        echo "Volumen montado en $MOUNTPOINT"
+    else
+        echo "Ya está montado en $MOUNTPOINT"
+    fi

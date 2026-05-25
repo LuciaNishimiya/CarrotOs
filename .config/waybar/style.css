@@ -1,0 +1,214 @@
+@define-color pink              #F5A9C7;
+@define-color blue              #7EC8E3;
+@define-color white             #F6F7F8;
+
+@define-color pastel-lavender   #C3B1E1;
+@define-color pastel-mint       #9FE0C3;
+
+@define-color bg-module         rgba(255, 100, 252, 0.164);
+
+@define-color text-dark         #161320;
+
+
+/* =========================
+   GLOBAL
+   ========================= */
+
+* {
+  border: none;
+  font-family: "JetbrainsMono Nerd Font";
+  font-size: 15px;
+  min-height: 10px;
+}
+
+window#waybar {
+  background-color: transparent;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+
+/* =========================
+   SHARED MODULE STYLE
+   ========================= */
+
+#network,
+#bluetooth,
+#pulseaudio,
+#battery,
+#tray,
+#custom-notifications,
+#cpu,
+#memory,
+#clock {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  margin-left: 8px;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  border-radius: 18px;
+
+  background: @bg-module;
+  color: @text-main;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  transition: none;
+}
+
+/* =========================
+   WORKSPACES
+   ========================= */
+
+#workspaces {
+  margin: 6px;
+
+  padding-left: 12px;
+  padding-right: 6px;
+
+  border-radius: 18px;
+
+  background: transparent;
+}
+
+#workspaces button {
+  margin-right: 10px;
+
+  background: transparent;
+  color: @pastel-mint;
+
+  transition: none;
+}
+
+#workspaces button.persistent {
+  color: @blue;
+  font-size: 4px;
+}
+
+#workspaces button.empty {
+  color: @white;
+  font-size: 2px;
+}
+
+#workspaces button.active {
+  color: @pink;
+  font-size: 4px;
+}
+
+
+/* =========================
+   LAUNCHER
+   ========================= */
+
+#custom-launcher {
+  margin-left: 8px;
+
+  padding-left: 10px;
+  padding-right: 5px;
+
+  border-radius: 10px;
+
+  background: transparent;
+  color: @blue;
+
+  font-size: 18px;
+
+  transition: none;
+}
+
+
+/* =========================
+   POWER
+   ========================= */
+
+#custom-power {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  margin-left: 8px;
+  margin-right: 10px;
+
+  padding-left: 10px;
+  padding-right: 15px;
+
+  border-radius: 18px;
+
+  background: transparent;
+  color: @pink;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  transition: none;
+}
+
+
+/* =========================
+   BATTERY
+   ========================= */
+
+#battery.critical:not(.charging) {
+  background: @pastel-mint;
+  color: @text-dark;
+
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes blink {
+  to {
+    color: @pastel-mint;
+  }
+}
+
+
+/* =========================
+   TRAY
+   ========================= */
+
+#tray button,
+#tray label,
+#tray image {
+  margin: 4px;
+}
+
+
+/* =========================
+   NOTIFICATIONS
+   ========================= */
+
+#custom-notifications.notification {
+  color: @pink;
+}
+
+#custom-notifications.none {
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+
+  background: transparent;
+}
+
+
+/* =========================
+   TOOLTIP
+   ========================= */
+
+tooltip {
+  background: rgba(20, 20, 25, 0.95);
+  color: @white;
+
+  border-radius: 12px;
+  padding: 8px;
+}
+
+tooltip label {
+  color: @white;
+}

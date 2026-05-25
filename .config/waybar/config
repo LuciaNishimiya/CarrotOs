@@ -1,0 +1,234 @@
+{
+    "layer": "top",
+    "width": 1728,
+    "margin-top": -2,
+    "margn-bottom": 0,
+
+    "include": [
+        "~/.config/waybar/quicklinks.json",
+    ],   
+
+///////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////
+
+
+
+    "modules-left": [
+        "network",
+        "bluetooth",
+        "pulseaudio",
+        "battery",
+        "tray",
+        "custom/notifications",
+    ],
+
+
+    "network": {
+        "format": "{ifname}",
+        "format-wifi": "{icon} {signalStrength}%",
+        "format-ethernet": " {bandwidthDownBits}",
+        "format-disconnected": "<span color='red'>󱚼 󰀪</span> ",
+        "tooltip-format": "  {ifname} via {gwaddri}",
+        "tooltip-format-wifi": "  {ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\nUp: {bandwidthUpBits} Down: {bandwidthDownBits}",
+        "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
+        "tooltip-format-disconnected": "Disconnected",
+        "format-icons":[
+            "<span color='#f2b6c1'>󰤯</span>",
+            "<span color='#f5d6a2'>󰤟</span>",
+            "<span color='#f2e2a0'>󰤢</span>",
+            "<span color='#9ece6a'>󰤥</span>",
+            "<span color='#9ece6a'>󰤨</span>"
+        ],
+        "max-length": 50,
+        "on-click": "hyprctl dispatch exec '[float; size 800 800; center] kitty nmtui'",
+        "on-click-right": "hyprctl dispatch exec '[float; size 800 800; center] nm-connection-editor'"
+    },
+
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": "<span color='#67c0f7'></span> {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click": "hyprctl dispatch exec '[float; size 800 800; center] blueman-manager'",
+        "on-click-right": "hyprctl dispatch exec '[float; size 800 800; center] blueman-manager'"
+    },
+
+    "pulseaudio": {
+        "tooltip": false,
+        "scroll-step": 5,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}%",
+        "format-muted": "<span color='#f7768e'> </span> {volume}%",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click": "hyprctl dispatch exec '[float; size 800 800; center] pavucontrol'",
+        "format-icons": {
+            "default": [
+                "<span color='#e47af7'> </span>",
+                "<span color='#e47af7'> </span>",
+                "<span color='#e47af7'> </span>"
+            ],
+            "headphone": "<span color='#e0eac0'>󰋋</span>",
+            "hands-free": "<span color='#e0eac0'>󰋋</span>"
+        }
+    },
+
+    "battery": {
+        "states": {
+            "good": 85,
+            "warning": 20,
+            "critical": 10
+        },
+        "format": "{icon} <span color='#F1F1F1'>{capacity}%</span>",
+        "format-charging": "<span color='#9ece6a'>{icon}󱐋</span> <span color='#F1F1F1'>{capacity}%</span>",
+        "format-plugged": "<span color='#9ece6a'>{icon}󱐋</span> <span color='#F1F1F1'>{capacity}%</span>",
+        "format-alt": "{icon}  <span color='#F1F1F1'>{time}</span><span color='#F1F1F1'> - {capacity}%</span>",
+        "format-icons": [
+            "<span color='#ff5373'>󰁺</span>",
+            "<span color='#ff5373'>󰁻</span>", 
+            "<span color='#f9be57'>󰁼</span>", 
+            "<span color='#f9be57'>󰁽</span>", 
+            "<span color='#f9e490'>󰁾</span>", 
+            "<span color='#f9e490'>󰁿</span>", 
+            "<span color='#cdeac0'>󰂀</span>", 
+            "<span color='#cdeac0'>󰂁</span>", 
+            "<span color='#9ece6a'>󰂂</span>", 
+            "<span color='#9ece6a'>󰁹</span>" 
+        ],
+        "on-click-right": "hyprctl dispatch exec '[float; size 1200 800; center] rog-control-center'"
+    },
+
+
+    "tray": {},
+    "custom/notifications": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "",
+            "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+///////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    "modules-center": [
+        "custom/launcher",
+        "hyprland/workspaces"
+    ],
+
+
+        "custom/launcher": {
+        "format": " ",
+        "on-click": "$HOME/.config/rofi/scripts/launcher",
+        "on-click-right": "killall rofi"
+    },
+
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "on-click": "activate",
+        "all-outputs": true,
+        "active-only": false,
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        },
+        "format": "{icon}",
+        "format-icons": {
+            "urgent": "<span font='12' color='#ee8296'></span>",
+            "active": "<span font='12'></span>",
+            "empty": "<span font='8'></span>",
+            "persistent": ""
+        }
+    },
+
+
+
+///////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////
+
+
+
+    "modules-right": [
+        "cpu",
+        "memory",
+        "clock",
+        "custom/power"
+    ],
+    "custom/gpu-usage": {
+        "format": "{icon} {}",
+        "exec": "gpu-usage-waybar",
+        "return-type": "json",
+        "format-icons": " "
+    },   
+    "cpu": {
+        "interval": 15,
+        "format": "<span color='#f7768e'> </span> {}%",
+        "max-length": 10
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": "<span color='#7dcfff'> </span> {used}GiB",
+        "max-length": 10
+    },
+
+"clock": {
+	"format": "{:%I:%M %p}",
+	"format-alt": "{:%A, %d, %B, %Y (%I:%M %p)}  ",
+    "interval": 60,
+	"tooltip-format": "<tt><small>{calendar}</small></tt>",
+	"calendar": {
+		"mode"          : "year",
+		"mode-mon-col"  : 3,
+		"weeks-pos"     : "right",
+		"on-scroll"     : 1,
+		"on-click-right": "mode",
+		"format": {
+			"months":     "<span color='#ffead3'><b>{}</b></span>",
+			"days":       "<span color='#ecc6d9'><b>{}</b></span>",
+			"weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+			"weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+			"today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+		}
+	},
+	"actions": {
+		"on-click-right": "mode",
+		"on-click-forward": "tz_up",
+		"on-click-backward": "tz_down",
+		"on-scroll-up": "shift_up",
+		"on-scroll-down": "shift_down"
+	}
+},
+    "custom/power": {
+        "format": "<span color='#f7768e'>⏻</span>",
+        "on-click": "$HOME/.config/rofi/scripts/powermenu"
+    }
+}
