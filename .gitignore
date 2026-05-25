@@ -1,0 +1,14 @@
+*
+!.gitignore
+
+
+!.config/hypr/
+!.config/kitty/
+!.config/waybar/
+
+!.zshrc
+!.local/
+!.local/bin/
+
+!.themes/
+!.icons/
